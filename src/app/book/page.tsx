@@ -24,7 +24,7 @@ export default function BookPage() {
 
     return (
         <section className="py-16 md:py-24 bg-muted">
-            <div className="container px-4 md:px-6 flex justify-center">
+            <div className="px-4 md:px-6 flex justify-center">
                 <div className="w-full max-w-md">
                     <BookingForm
                         services={services}

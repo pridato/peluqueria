@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import type { Service } from "@/lib/types"
-import { Clock, DollarSign } from "lucide-react"
+import {Clock, DollarSign, HandCoins} from "lucide-react"
 
 /**
  * ServiceCard Componente que muestra los detalles de un servicio
@@ -17,7 +17,7 @@ export default function ServiceCard({ service }: { service: Service }) {
             <CardContent className="flex-1">
                 <p className="text-muted-foreground mb-4 text-base">{service.description}</p>
                 <div className="flex items-center gap-2 text-gray-800 mb-2">
-                    <DollarSign className="h-5 w-5 text-green-600" />
+                    <HandCoins className="h-5 w-5 text-green-600" />
                     <span className="text-xl font-bold">{service.price.toFixed(2)} €</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-800">
