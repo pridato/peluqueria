@@ -9,6 +9,10 @@ import { Label } from "@/components/ui/label"
 import AdminDashboard from "@/components/admin-dashboard"
 import { LogIn } from "lucide-react"
 
+/**
+ * Página de administración que permite a los usuarios iniciar sesión
+ * @constructor
+ */
 export default function AdminPage() {
 
     // estados para manejar el login
