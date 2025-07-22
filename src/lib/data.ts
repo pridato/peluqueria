@@ -90,6 +90,6 @@ export const testimonials: Testimonial[] = [
     },
 ]
 
-// By the moment we will not use the bookings, but we will keep the type and the array for future use
-// TODO: Implement in database
+// por el momento, las reservas son un array mutable que se puede modificar en la sesión
+// en un futuro se podría implementar una base de datos o almacenamiento persistente
 export const bookings: Booking[] = []
