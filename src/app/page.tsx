@@ -73,7 +73,7 @@ export default function HomePage() {
   return (
       <>
         {/* Hero Section */}
-        <section className="relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden flex items-center justify-center">
+        <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center">
           <Image
               src="/placeholder.svg?height=800&width=1600&text=Peluqueria Elegante"
               alt="Fondo de Peluquería Elegante"

@@ -10,7 +10,7 @@ import {Clock, DollarSign, HandCoins} from "lucide-react"
  */
 export default function ServiceCard({ service }: { service: Service }) {
     return (
-        <Card className="flex flex-col h-full transition-all duration-300 hover:shadow-xl hover:scale-[1.02]">
+        <Card className="flex flex-col h-full transition-all duration-300 hover:scale-[1.01]">
             <CardHeader>
                 <CardTitle className="text-2xl font-bold text-primary mb-2">{service.name}</CardTitle>
             </CardHeader>

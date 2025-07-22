@@ -14,6 +14,7 @@ import type { Booking, BookingFormProps } from "@/lib/types"
 import { bookings } from "@/lib/data"
 import { cn } from "@/lib/utils"
 import {availableTimes} from "@/lib/consts";
+import { es } from "date-fns/locale"
 
 export default function BookingForm({ services, initialServiceId, onBookingSuccess }: BookingFormProps) {
 
@@ -46,6 +47,8 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
         }
     }, [initialServiceId])
 
+    const [datePopoverOpen, setDatePopoverOpen] = useState(false)
+
 
     /**
      * Resetea los campos del formulario a sus valores iniciales.
@@ -57,6 +60,37 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
         setSelectedServiceId("")
         setSelectedDate(undefined)
         setSelectedTime("")
+
+        setNameTouched(false)
+        setEmailTouched(false)
+        setPhoneTouched(false)
+        setServiceTouched(false)
+        setDateTouched(false)
+        setTimeTouched(false)
+        setFormError(null)
+    }
+
+    /**
+     * Verifica si la hora seleccionada es una hora pasada en relación con la fecha seleccionada.
+     * @param time - Hora en formato "HH:mm".
+     * @param selectedDate - Fecha seleccionada para la reserva.
+     */
+    function isPastTime(time: string, selectedDate?: Date): boolean {
+
+        if (!selectedDate) return false // si no hay fecha, no marcamos ninguna como pasada
+
+        const [hours, minutes] = time.split(":").map(Number)
+
+        const now = new Date()
+        const dateToCompare = new Date(selectedDate)
+        dateToCompare.setHours(hours)
+        dateToCompare.setMinutes(minutes)
+        dateToCompare.setSeconds(0)
+        dateToCompare.setMilliseconds(0)
+
+        console.log(dateToCompare)
+        console.log(now)
+        return dateToCompare < now
     }
 
     /**
@@ -254,7 +288,7 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
                 <Label htmlFor="date" className="mb-2 block text-gray-700 font-medium">
                     Fecha
                 </Label>
-                <Popover>
+                <Popover open={datePopoverOpen} onOpenChange={setDatePopoverOpen}>
                     <PopoverTrigger asChild>
                         <Button
                             variant={"outline"}
@@ -266,7 +300,7 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
                             onClick={() => setDateTouched(true)}
                         >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {selectedDate ? format(selectedDate, "PPP") : <span>Selecciona una fecha</span>}
+                            {selectedDate ? format(selectedDate, "PPP", { locale: es }) : <span>Selecciona una fecha</span>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -274,10 +308,12 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
                             mode="single"
                             selected={selectedDate}
                             onSelect={(date) => {
-                                setSelectedDate(date)
-                                setDateTouched(true)
+                                if (date) {
+                                    setSelectedDate(date)
+                                    setDateTouched(true)
+                                    setDatePopoverOpen(false)
+                                }
                             }}
-                            initialFocus
                             disabled={(date) => date < new Date() || date.getDay() === 0} // Disable past dates and Sundays
                         />
                     </PopoverContent>
@@ -307,11 +343,20 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
                         <SelectValue placeholder="Selecciona una hora" />
                     </SelectTrigger>
                     <SelectContent>
-                        {availableTimes.map((time) => (
-                            <SelectItem key={time} value={time}>
-                                {time}
-                            </SelectItem>
-                        ))}
+                        {availableTimes.map((time) => {
+                            const disabled = isPastTime(time, selectedDate)
+
+                            return (
+                                <SelectItem
+                                    key={time}
+                                    value={time}
+                                    disabled={disabled}
+                                    className={cn(disabled && "text-gray-400 cursor-not-allowed")}
+                                >
+                                    {time}
+                                </SelectItem>
+                            )
+                        })}
                     </SelectContent>
                 </Select>
                 {timeTouched && !selectedTime && <p className="text-red-500 text-sm mt-1">La hora es obligatoria.</p>}
