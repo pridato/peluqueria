@@ -35,3 +35,9 @@ export interface Booking {
     time: string // HH:MM
     status: BookingStatus
 }
+
+export interface BookingFormProps {
+    services: Service[]
+    initialServiceId?: string
+    onBookingSuccess: (booking: Booking) => void
+}

@@ -10,17 +10,14 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { format } from "date-fns"
 import { CalendarIcon, CheckCircle2, XCircle } from "lucide-react"
-import type { Service, Booking } from "@/lib/types"
-import { bookings } from "@/lib/data" // Import the mutable bookings array
-import { cn } from "@/lib/utils" // Asegúrate de que esta importación exista
-
-interface BookingFormProps {
-    services: Service[]
-    initialServiceId?: string
-    onBookingSuccess: (booking: Booking) => void
-}
+import type { Booking, BookingFormProps } from "@/lib/types"
+import { bookings } from "@/lib/data"
+import { cn } from "@/lib/utils"
+import {availableTimes} from "@/lib/consts";
 
 export default function BookingForm({ services, initialServiceId, onBookingSuccess }: BookingFormProps) {
+
+    // estado para los campos del formulario
     const [customerName, setCustomerName] = useState("")
     const [customerEmail, setCustomerEmail] = useState("")
     const [customerPhone, setCustomerPhone] = useState("")
@@ -30,7 +27,7 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
     const [formError, setFormError] = useState<string | null>(null)
     const [bookingSuccess, setBookingSuccess] = useState(false)
 
-    // Validation states
+    // estados para manejar el estado de los campos tocados
     const [nameTouched, setNameTouched] = useState(false)
     const [emailTouched, setEmailTouched] = useState(false)
     const [phoneTouched, setPhoneTouched] = useState(false)
@@ -38,43 +35,40 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
     const [dateTouched, setDateTouched] = useState(false)
     const [timeTouched, setTimeTouched] = useState(false)
 
+    // Validaciones simples para email y teléfono
     const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     const isValidPhone = (phone: string) => /^\d{9,15}$/.test(phone.replace(/[\s-()]/g, "")) // Simple digit check
 
     useEffect(() => {
-        if (initialServiceId) {
+        if (initialServiceId) { // Si se proporciona un ID de servicio inicial, seleccionarlo
             setSelectedServiceId(initialServiceId)
             setServiceTouched(true)
         }
     }, [initialServiceId])
 
-    const availableTimes = [
-        "09:00",
-        "09:30",
-        "10:00",
-        "10:30",
-        "11:00",
-        "11:30",
-        "12:00",
-        "12:30",
-        "13:00",
-        "13:30",
-        "14:00",
-        "14:30",
-        "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-    ]
 
+    /**
+     * Resetea los campos del formulario a sus valores iniciales.
+     */
+    function resetForm() {
+        setCustomerName("")
+        setCustomerEmail("")
+        setCustomerPhone("")
+        setSelectedServiceId("")
+        setSelectedDate(undefined)
+        setSelectedTime("")
+    }
+
+    /**
+     * Maneja el envío del formulario de reserva.
+     * @param e Evento de envío del formulario.
+     */
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         setFormError(null)
         setBookingSuccess(false)
 
-        // Trigger all touched states on submit attempt
+        // Marcar todos los campos como tocados para mostrar errores si es necesario
         setNameTouched(true)
         setEmailTouched(true)
         setPhoneTouched(true)
@@ -96,12 +90,14 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
             return
         }
 
+        // verificamos que el servicio seleccionado sea válido
         const selectedService = services.find((s) => s.id === selectedServiceId)
         if (!selectedService) {
             setFormError("Servicio seleccionado no válido.")
             return
         }
 
+        // creamos la nueva reserva, por defecto "pending"
         const newBooking: Booking = {
             id: `booking-${Date.now()}`,
             customerName,
@@ -111,21 +107,16 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
             serviceName: selectedService.name,
             date: format(selectedDate, "yyyy-MM-dd"),
             time: selectedTime,
-            status: "pending", // Default status
+            status: "pending",
         }
 
-        // Simulate saving to "backend" (in-memory array)
+        // por el momento lo guardamos en el array de reservas, pendiente de integración con backend
         bookings.push(newBooking)
-        onBookingSuccess(newBooking) // Notify parent component
+        onBookingSuccess(newBooking) // notificamos al componente padre del éxito de la reserva
         setBookingSuccess(true)
 
-        // Reset form
-        setCustomerName("")
-        setCustomerEmail("")
-        setCustomerPhone("")
-        setSelectedServiceId("")
-        setSelectedDate(undefined)
-        setSelectedTime("")
+
+        resetForm();
     }
 
     return (
