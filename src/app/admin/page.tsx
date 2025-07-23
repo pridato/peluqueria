@@ -6,8 +6,8 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import AdminDashboard from "@/components/admin-dashboard"
 import { LogIn } from "lucide-react"
+import DashboardBlock from "@/components/dashboardBlock";
 
 /**
  * Página de administración que permite a los usuarios iniciar sesión
@@ -42,12 +42,17 @@ export default function AdminPage() {
         return (
             <section className="py-16 md:py-24 bg-muted">
                 <div className="container px-4 md:px-6">
-                    <AdminDashboard />
+                    <DashboardBlock />
                 </div>
             </section>
         )
     }
 
+    return (
+        <DashboardBlock/>
+    )
+
+    /**
     // Si no está logueado, muestra el formulario de inicio de sesión
     return (
         <section className="py-16 md:py-24 bg-muted flex items-center justify-center">
@@ -89,4 +94,6 @@ export default function AdminPage() {
             </div>
         </section>
     )
+
+     */
 }

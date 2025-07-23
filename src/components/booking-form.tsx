@@ -88,16 +88,26 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
         dateToCompare.setSeconds(0)
         dateToCompare.setMilliseconds(0)
 
-        console.log(dateToCompare)
-        console.log(now)
         return dateToCompare < now
+    }
+
+    /**
+     * Envía un correo de confirmación al cliente con los detalles de la reserva.
+     * @param newBooking - Objeto de reserva que contiene los detalles del cliente y la cita.
+     */
+    async function sendEmail(newBooking: Booking) {
+        await fetch("/api/booking/confirm", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(newBooking),
+        })
     }
 
     /**
      * Maneja el envío del formulario de reserva.
      * @param e Evento de envío del formulario.
      */
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setFormError(null)
         setBookingSuccess(false)
@@ -148,6 +158,8 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
         bookings.push(newBooking)
         onBookingSuccess(newBooking) // notificamos al componente padre del éxito de la reserva
         setBookingSuccess(true)
+
+        await sendEmail(newBooking);
 
 
         resetForm();
