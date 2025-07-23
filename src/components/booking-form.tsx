@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { format } from "date-fns"
-import { CalendarIcon, CheckCircle2, XCircle } from "lucide-react"
+import { CalendarIcon, CheckCircle2, XCircle, PhoneIcon as Whatsapp } from "lucide-react"
 import type { Booking, BookingFormProps } from "@/lib/types"
 import { bookings } from "@/lib/data"
 import { cn } from "@/lib/utils"
@@ -163,6 +163,22 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
 
 
         resetForm();
+    }
+
+    /**
+     * Maneja la reserva a través de WhatsApp.
+     */
+    const handleWhatsappBooking = () => {
+        const serviceName = services.find((s) => s.id === selectedServiceId)?.name || "un servicio"
+        const date = selectedDate ? format(selectedDate, "dd/MM/yyyy") : "una fecha"
+        const time = selectedTime || "una hora"
+
+        const message = encodeURIComponent(
+            `Hola, me gustaría reservar una cita para ${serviceName} el ${date} a las ${time}. Mi nombre es ${customerName}. Mi email es ${customerEmail} y mi teléfono es ${customerPhone}.`,
+        )
+        // Replace with your actual WhatsApp number
+        const whatsappNumber = "34600123456" // Example: +34 600 123 456
+        window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank")
     }
 
     return (
@@ -326,7 +342,12 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
                                     setDatePopoverOpen(false)
                                 }
                             }}
-                            disabled={(date) => date < new Date() || date.getDay() === 0} // Disable past dates and Sundays
+                            disabled={(date) => {
+                                const today = new Date()
+                                today.setHours(0, 0, 0, 0) // eliminamos la hora
+                                return date < today || date.getDay() === 0
+                            }}
+
                         />
                     </PopoverContent>
                 </Popover>
@@ -376,9 +397,24 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
 
             <Button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary/90 text-white text-lg py-3 rounded-lg shadow-md"
+                className="w-full bg-primary hover:cursor-pointer hover:bg-primary/90 text-white text-lg py-3 rounded-lg shadow-md"
             >
                 Confirmar Reserva
+            </Button>
+
+            <div className="relative flex py-5 items-center">
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="flex-shrink mx-4 text-gray-500">O</span>
+                <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            <Button
+                type="button"
+                onClick={handleWhatsappBooking}
+                className="w-full bg-green-500 hover:cursor-pointer hover:bg-green-600 text-white text-lg py-3 rounded-lg shadow-md flex items-center justify-center gap-2"
+            >
+                <Whatsapp className="h-6 w-6" />
+                Reservar por WhatsApp
             </Button>
         </form>
     )

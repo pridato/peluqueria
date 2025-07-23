@@ -3,12 +3,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { testimonials, services } from "@/lib/data"
 import TestimonialCard from "@/components/testimonial-card"
 import ServiceCard from "@/components/service-card"
 import { motion } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { testimonials, services, teamMembers } from "@/lib/data"
 
 export default function HomePage() {
   const testimonialsRef = useRef<HTMLDivElement>(null)
@@ -73,21 +73,13 @@ export default function HomePage() {
   return (
       <>
         {/* Hero Section */}
-        <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center">
-          <Image
-              src="/placeholder.svg?height=800&width=1600&text=Peluqueria Elegante"
-              alt="Fondo de Peluquería Elegante"
-              layout="fill"
-              objectFit="cover"
-              quality={90}
-              className="z-0 blur-sm scale-105" // Imagen desenfocada y ligeramente escalada
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" /> {/* Degradado suave */}
-          <motion.div
+        <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-gradient-to-b from-black via-gray-300 to-white">
+
+        <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-4 max-w-4xl"
+              className="relative z-20 flex flex-col items-center justify-center h-full text-center max-w-4xl"
           >
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-lg leading-tight">
               Transforma tu Estilo en <span className="text-primary-foreground">La Barbería Elegante</span>
@@ -188,6 +180,63 @@ export default function HomePage() {
             >
               <ChevronRight className="h-6 w-6" />
             </Button>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="py-16 md:py-24 bg-white">
+          <div className="px-4 md:px-6 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Conoce a Nuestro Equipo</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12">
+              Nuestros expertos barberos y estilistas están listos para darte el mejor servicio.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {teamMembers.map((member, index) => (
+                  <motion.div
+                      key={member.id}
+                      initial={{ opacity: 0, y: 50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg shadow-sm"
+                  >
+                    <div className="w-30 h-30 mb-4 flex items-center justify-center rounded-full bg-primary text-white text-5xl font-bold">
+                      {member.name.charAt(0).toUpperCase()}
+                    </div>
+
+                    <h3 className="text-xl font-semibold text-gray-800 mb-1">{member.name}</h3>
+                    <p className="text-primary font-medium">{member.role}</p>
+                  </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Map Section */}
+        <section className="py-16 md:py-24 bg-muted">
+          <div className="px-4 md:px-6 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Encuéntranos</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12">
+              Visítanos en nuestra ubicación. ¡Te esperamos!
+            </p>
+            <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.7 }}
+                className="w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg border border-gray-200"
+            >
+              <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d6068.273006234794!2d-3.3523155468515804!3d40.49436445552421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1753263824103!5m2!1ses!2ses"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Ubicación de La Barbería Elegante"
+              ></iframe>
+            </motion.div>
           </div>
         </section>
       </>

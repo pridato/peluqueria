@@ -1,4 +1,4 @@
-import type { Service, Testimonial, Booking } from "./types"
+import type {Service, Testimonial, Booking, TeamMember} from "./types"
 
 export const services: Service[] = [
     {
@@ -89,6 +89,34 @@ export const testimonials: Testimonial[] = [
         avatar: "",
     },
 ]
+
+export const teamMembers: TeamMember[] = [
+    {
+        id: "barbero-1",
+        name: "Ricardo 'El Maestro'",
+        role: "Barbero Principal",
+        image: "/placeholder.svg?height=160&width=160&text=Ricardo",
+    },
+    {
+        id: "estilista-1",
+        name: "Laura Estilista",
+        role: "Estilista Senior",
+        image: "/placeholder.svg?height=160&width=160&text=Laura",
+    },
+    {
+        id: "barbero-2",
+        name: "Javier 'El Preciso'",
+        role: "Barbero Experto",
+        image: "/placeholder.svg?height=160&width=160&text=Javier",
+    },
+    {
+        id: "estilista-2",
+        name: "Sofía Creativa",
+        role: "Estilista Colorista",
+        image: "/placeholder.svg?height=160&width=160&text=Sofia",
+    },
+]
+
 
 // por el momento, las reservas son un array mutable que se puede modificar en la sesión
 // en un futuro se podría implementar una base de datos o almacenamiento persistente

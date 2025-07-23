@@ -3,10 +3,29 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Scissors } from "lucide-react"
+import {useEffect, useState} from "react";
 
 export default function Header() {
+
+    const [scrolled, setScrolled] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 30)
+        }
+
+        window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
+
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 lg:px-8 bg-white shadow-md text-gray-800">
+        <header
+            className={`fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-4 lg:px-8 transition-all duration-300 ${
+                scrolled
+                    ? "bg-white shadow-md text-gray-800"
+                    : "bg-transparent text-white"
+            }`}
+        >
             <Link href="/" className="flex items-center gap-2">
                 <Scissors className="h-7 w-7 text-primary" />
                 <span className="text-xl font-bold">La Barbería Elegante</span>
