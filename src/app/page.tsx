@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import TestimonialCard from "@/components/testimonial-card"
@@ -14,6 +13,10 @@ export default function HomePage() {
   const testimonialsRef = useRef<HTMLDivElement>(null)
   const [scrollInterval, setScrollInterval] = useState<NodeJS.Timeout | null>(null)
 
+  /**
+   * Al hacer click en el botón de scroll, se desplaza el carrusel de testimonios
+   * @param direction - "left" o "right"
+   */
   const scrollTestimonials = (direction: "left" | "right") => {
     if (testimonialsRef.current) {
       const firstChild = testimonialsRef.current.children[0] as HTMLElement
@@ -28,6 +31,9 @@ export default function HomePage() {
     }
   }
 
+  /**
+   * Inicia el auto-scroll del carrusel de testimonios
+   */
   const startAutoScroll = () => {
     if (scrollInterval) clearInterval(scrollInterval)
     const interval = setInterval(() => {
@@ -49,6 +55,9 @@ export default function HomePage() {
     setScrollInterval(interval)
   }
 
+  /**
+   * Detiene el auto-scroll del carrusel de testimonios
+   */
   const stopAutoScroll = () => {
     if (scrollInterval) {
       clearInterval(scrollInterval)
@@ -56,16 +65,24 @@ export default function HomePage() {
     }
   }
 
+  /**
+   * Inicia el auto-scroll del carrusel de testimonios al montar el componente
+   */
   useEffect(() => {
     startAutoScroll() // Start auto-scroll on mount
     return () => stopAutoScroll() // Clean up on unmount
   }, [])
 
-  // Pause/resume on hover
+  /**
+   * Pausa el auto-scroll del carrusel de testimonios al pasar el mouse sobre el carrusel
+   */
   const handleMouseEnter = () => {
     stopAutoScroll()
   }
 
+  /**
+   * Reanuda el auto-scroll del carrusel de testimonios al salir del mouse del carrusel
+   */
   const handleMouseLeave = () => {
     startAutoScroll()
   }

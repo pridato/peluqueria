@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "produccion": {
+      "type": "http",
+      "url": "https://peluqueria-7it7.vercel.app",
+      "description": "Sitio web de producción de La Barbería Elegante"
+    }
+  }
+} 
