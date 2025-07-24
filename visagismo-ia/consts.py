@@ -1,0 +1,30 @@
+LANDMARKS = {
+    "chin": 152,
+    "forehead": 10,
+    "left_cheek": 234,
+    "right_cheek": 454,
+    "left_jaw": 234,
+    "right_jaw": 454,
+    "left_temple": 127,
+    "right_temple": 356,
+    "nose_tip": 1,
+    "left_eye_outer": 33,
+    "right_eye_outer": 263,
+    "left_eye_inner": 133,
+    "right_eye_inner": 362,
+    "mouth_left": 61,
+    "mouth_right": 291,
+    "mouth_top": 13,
+    "mouth_bottom": 14,
+}
+
+FACE_SHAPES = {
+    "ovalado": "Rostro equilibrado, frente y mandíbula similares, pómulos marcados.",
+    "redondo": "Ancho y largo similares, mandíbula y frente suaves.",
+    "cuadrado": "Frente, pómulos y mandíbula de ancho similar, mandíbula marcada.",
+    "rectangular": "Rostro más largo que ancho, mandíbula y frente anchas.",
+    "diamante": "Pómulos anchos, frente y mandíbula estrechas.",
+    "triangular": "Mandíbula más ancha que la frente, pómulos marcados.",
+    "corazón": "Frente ancha, pómulos marcados, barbilla estrecha.",
+    "alargado": "Rostro notablemente más largo que ancho, barbilla y frente estrechas.",
+}
