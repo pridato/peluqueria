@@ -1,3 +1,6 @@
-fastapi
+ fastapi
 uvicorn
 pillow
+mediapipe
+opencv-python
+numpy

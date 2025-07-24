@@ -2,6 +2,46 @@
 node_modules
 .next
 
+# Archivos y carpetas de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.manifest
+*.spec
+*.log
+*.pot
+*.mo
+*.coverage
+.coverage.*
+.cache
+.pytest_cache/
+.tox/
+.mypy_cache/
+.dmypy.json
+.pyre/
+pip-wheel-metadata/
+*.sqlite3
+# Entornos virtuales
+venv/
+env/
+ENV/
+.venv/
+.ipynb_checkpoints/
+# Archivos de configuración de IDEs de Python
+.idea/
+.vscode/
+# Archivos de salida de Jupyter
+*.ipynb
+
+
 .cursor
 # dependencies
 /node_modules
