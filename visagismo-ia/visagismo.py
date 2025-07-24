@@ -1,5 +1,5 @@
 import numpy as np
-from consts import LANDMARKS, FACE_SHAPES
+from consts import LANDMARKS, FACE_SHAPES, RECOMMENDATIONS
 
 
 def euclidean_distance(p1, p2):
@@ -61,5 +61,6 @@ def analyze_face_shape(landmarks):
     # devolvemos un diccionario con la forma del rostro y su descripción
     return {
         "shape": shape,
-        "description": FACE_SHAPES[shape]
+        "description": FACE_SHAPES[shape],
+        "recommendations": RECOMMENDATIONS[shape]
     }

@@ -23,6 +23,7 @@ async def analyze_image(file: UploadFile = File(...)):
         - landmarks: lista de diccionarios con las coordenadas de los puntos de referencia de la cara
         - face_shape: forma del rostro
         - description: descripción de la forma del rostro
+        - recommendations: recomendaciones para el corte de cabello
     """
     # leemos la imagen y la convertimos a bytes
     image_bytes = await file.read()
@@ -43,5 +44,6 @@ async def analyze_image(file: UploadFile = File(...)):
         "message": "Cara detectada correctamente.",
         "landmarks": result["landmarks"],
         "face_shape": analysis["shape"],
-        "description": analysis["description"]
+        "description": analysis["description"],
+        "recommendations": analysis["recommendations"]
     })

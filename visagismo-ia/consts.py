@@ -28,3 +28,38 @@ FACE_SHAPES = {
     "corazón": "Frente ancha, pómulos marcados, barbilla estrecha.",
     "alargado": "Rostro notablemente más largo que ancho, barbilla y frente estrechas.",
 }
+
+RECOMMENDATIONS = {
+    "ovalado": [
+        "Casi cualquier corte te favorece. Prueba con capas largas, flequillo lateral o bob.",
+        "Evita cortes que tapen demasiado el rostro."
+    ],
+    "redondo": [
+        "Cortes con capas largas, desfilados y volumen en la parte superior.",
+        "Evita flequillos rectos y cortes muy cortos a la altura de la mandíbula."
+    ],
+    "cuadrado": [
+        "Cortes con ondas suaves, capas y flequillo lateral.",
+        "Evita cortes rectos a la altura de la mandíbula."
+    ],
+    "rectangular": [
+        "Cortes con volumen a los lados, flequillo y ondas.",
+        "Evita cortes muy largos y lisos."
+    ],
+    "diamante": [
+        "Cortes con volumen en la barbilla, flequillo y capas suaves.",
+        "Evita volumen excesivo en la parte superior."
+    ],
+    "triangular": [
+        "Cortes con volumen en la parte superior y flequillo.",
+        "Evita cortes muy cortos en los laterales."
+    ],
+    "corazón": [
+        "Cortes con capas largas, flequillo lateral y ondas.",
+        "Evita volumen excesivo en la parte superior."
+    ],
+    "alargado": [
+        "Cortes con flequillo, ondas y volumen a los lados.",
+        "Evita cortes muy largos y lisos."
+    ],
+}
