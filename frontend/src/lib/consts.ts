@@ -19,4 +19,5 @@ export const availableTimes = [
     "17:30",
 ]
 
-export const API_URL = "http://localhost:8000"
+// export const API_URL = "http://localhost:8000"
+export const API_URL = "https://peluqueria-bnd6.onrender.com"
