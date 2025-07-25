@@ -90,8 +90,7 @@ export default function HomePage() {
   return (
       <>
         {/* Hero Section */}
-        <section className="relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden flex items-center justify-center pt-16 bg-background">
-        
+        <section className="top-6 relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden flex items-center justify-center pt-16 bg-[url('/pattern.svg')] bg-white bg-repeat bg-[length:50px_20px]">
         <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
@@ -99,7 +98,7 @@ export default function HomePage() {
               className="relative z-20 flex flex-col items-center justify-center h-full text-center max-w-4xl"
           >
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-lg leading-tight">
-              Transforma tu Estilo en <span className="text-primary-foreground">La Barbería Elegante</span>
+              Transforma tu Estilo en <span className="text-[hsl(166_37%_37%)]">La Barbería Elegante</span>
             </h1>
             <p className="text-xl md:text-2xl max-w-3xl mb-10 drop-shadow-md font-light">
               Donde la tradición se encuentra con la modernidad. Expertos en cortes, coloración y cuidado de barba para un
@@ -113,9 +112,9 @@ export default function HomePage() {
               <Button
                   asChild
                   size="lg"
-                  className="bg-primary hover:bg-primary/90 text-white text-xl px-10 py-7 rounded-full shadow-xl transition-transform transform hover:scale-105 focus:ring-4 focus:ring-primary/50"
+                  className="bg-[#fbbf24] hover:bg-[#f59e0b] text-white text-xl px-10 py-7 rounded-full shadow-xl transition-transform transform hover:scale-105 focus:ring-4 focus:ring-primary/50"
               >
-                <Link href="/book">Reservar Cita Ahora</Link>
+                <Link href="/book" className="text-white">Reservar Cita Ahora</Link>
               </Button>
             </motion.div>
           </motion.div>
@@ -203,8 +202,8 @@ export default function HomePage() {
         {/* Team Section */}
         <section className="py-16 md:py-24 bg-white">
           <div className="px-4 md:px-6 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Conoce a Nuestro Equipo</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[hsl(0_0%_17%)]">Conoce a Nuestro Equipo</h2>
+            <p className="text-lg text-text-[hsl(0_0%_17%)] max-w-3xl mx-auto mb-12">
               Nuestros expertos barberos y estilistas están listos para darte el mejor servicio.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -215,14 +214,14 @@ export default function HomePage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.3 }}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg shadow-sm"
+                      className="flex flex-col items-center text-center p-4 bg-[hsl(60_66%_98%)] rounded-lg shadow-sm"
                   >
-                    <div className="w-30 h-30 mb-4 flex items-center justify-center rounded-full bg-primary text-white text-5xl font-bold">
+                    <div className="w-30 h-30 mb-4 flex items-center justify-center rounded-full bg-[hsl(166_37%_37%)] text-white text-5xl font-bold">
                       {member.name.charAt(0).toUpperCase()}
                     </div>
 
                     <h3 className="text-xl font-semibold text-gray-800 mb-1">{member.name}</h3>
-                    <p className="text-primary font-medium">{member.role}</p>
+                    <p className="text-[#fbbf24] font-medium">{member.role}</p>
                   </motion.div>
               ))}
             </div>

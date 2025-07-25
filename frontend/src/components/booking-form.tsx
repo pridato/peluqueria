@@ -397,7 +397,7 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
 
             <Button
                 type="submit"
-                className="w-full bg-primary hover:cursor-pointer hover:bg-primary/90 text-white text-lg py-3 rounded-lg shadow-md"
+                className="w-full bg-[hsl(166_37%_37%)] hover:bg-[hsl(166_37%_37%)]/90 text-[hsl(60_66%_98%)] text-lg py-3 rounded-lg shadow-md"
             >
                 Confirmar Reserva
             </Button>
