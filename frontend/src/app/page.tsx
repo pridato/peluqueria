@@ -90,8 +90,8 @@ export default function HomePage() {
   return (
       <>
         {/* Hero Section */}
-        <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-gradient-to-b from-black via-gray-300 to-white">
-
+        <section className="relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden flex items-center justify-center pt-16 bg-background">
+        
         <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}

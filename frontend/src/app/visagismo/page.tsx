@@ -1,10 +1,8 @@
 "use client"
 
 import Link from "next/link"
-
 import type React from "react"
-
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -24,9 +22,11 @@ export default function VisagismoPage() {
   const [faceShape, setFaceShape] = useState<string | null>(null)
   const [recommendedCut, setRecommendedCut] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [landmarks, setLandmarks] = useState<{x:number; y:number; z:number; }[] | null>(null)
+  const [landmarks, setLandmarks] = useState<{ x: number; y: number; z: number }[] | null>(null)
   const [description, setDescription] = useState<string | null>(null)
+  const [finalImageUrl, setFinalImageUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   
   /**
    * Maneja el cambio de archivo seleccionado
@@ -66,12 +66,11 @@ export default function VisagismoPage() {
     setFaceShape(null)
     setRecommendedCut(null)
     setLandmarks(null)
+    setFinalImageUrl(null)
 
     // Crea un objeto FormData para enviar la imagen al backend
     const formData = new FormData()
     formData.append("file", selectedFile)
-
-    console.log(selectedFile)
 
     // Intenta enviar la imagen al backend
     try {
@@ -89,8 +88,7 @@ export default function VisagismoPage() {
       // Si la respuesta es exitosa, procesa los datos
       const data = await response.json()
       
-      console.log(data.face_shape)
-      setResultImage(data.resultImageUrl)
+      setResultImage(previewUrl)
       setFaceShape(data.face_shape)
       setRecommendedCut(data.recommendations[0])
       setLandmarks(data.landmarks)
@@ -116,6 +114,47 @@ export default function VisagismoPage() {
       setPreviewUrl(null)
     }
   }
+
+  /**
+   * Dibuja los puntos de referencia de la cara en la imagen
+   * @returns void
+   */
+  const drawLandmarksOnImage = () => {
+    if (!landmarks || !previewUrl || !canvasRef.current) return
+
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext("2d")
+    const image = new window.Image(1, 1)
+
+    image.onload = () => {
+      canvas.width = image.width
+      canvas.height = image.height
+      ctx?.drawImage(image, 0, 0)
+
+      if (ctx) {
+        ctx.fillStyle = "#FF0000"
+        for (const point of landmarks) {
+          const x = point.x * image.width
+          const y = point.y * image.height
+          ctx.beginPath()
+          ctx.arc(x, y, 2.5, 0, 2 * Math.PI)
+          ctx.fill()
+        }
+
+        const resultUrl = canvas.toDataURL("image/png")
+        console.log(resultUrl)
+        setFinalImageUrl(resultUrl)
+      }
+    }
+
+    image.src = previewUrl
+  }
+
+  useEffect(() => {
+    if (landmarks && previewUrl) {
+      drawLandmarksOnImage()
+    }
+  }, [landmarks, previewUrl])
 
   return (
     <section className="py-16 md:py-24 bg-muted flex items-center justify-center min-h-[calc(100vh-128px)]">
@@ -156,41 +195,20 @@ export default function VisagismoPage() {
               />
             </div>
 
-            {/* Vista previa de la imagen */}
-            {previewUrl && (
+            {/* Imagen procesada con landmarks */}
+            {finalImageUrl && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
                 className="mt-6 flex flex-col items-center"
               >
-                <h3 className="text-xl font-semibold text-foreground mb-4">Vista Previa:</h3>
-                <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-lg overflow-hidden border-2 border-primary shadow-md">
-                  <Image
-                    src={previewUrl || "/placeholder.svg"}
-                    alt="Vista previa de la imagen"
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                  {/* Muestra los puntos de referencia de la cara */}
-                  {landmarks && landmarks.length > 0 && (
-                    <div className="absolute inset-0">
-                      {landmarks.map((point, index) => (
-                        <div
-                          key={index}
-                          className="absolute bg-red-500 rounded-full"
-                          style={{
-                            left: `${point.x * 100}%`,
-                            top: `${point.y * 100}%`,
-                            width: "4px",
-                            height: "4px",
-                            transform: "translate(-50%, -50%)",
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-4">Resultado con Puntos Faciales:</h3>
+                <Image
+                  src={finalImageUrl}
+                  alt="Resultado del análisis"
+                  className="w-64 h-64 md:w-80 md:h-80 rounded-lg border border-primary shadow-md object-cover"
+                />
               </motion.div>
             )}
 

@@ -44,6 +44,9 @@ export default function Header() {
                 <Link href="/admin" className="text-base font-medium hover:text-primary transition-colors">
                     Admin
                 </Link>
+                <Link href="/visagismo" className="text-base font-medium hover:text-primary transition-colors">
+                    Visagismo
+                </Link>
             </nav>
 
             <Button
