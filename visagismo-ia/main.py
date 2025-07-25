@@ -17,6 +17,11 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+
 @app.post("/analyze")
 async def analyze_image(file: UploadFile = File(...)):
     """

@@ -177,7 +177,7 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
             `Hola, me gustaría reservar una cita para ${serviceName} el ${date} a las ${time}. Mi nombre es ${customerName}. Mi email es ${customerEmail} y mi teléfono es ${customerPhone}.`,
         )
         // Replace with your actual WhatsApp number
-        const whatsappNumber = "34600123456" // Example: +34 600 123 456
+        const whatsappNumber = "34637604644" // Example: +34 600 123 456
         window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank")
     }
 
