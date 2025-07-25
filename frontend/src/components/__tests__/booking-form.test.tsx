@@ -15,10 +15,10 @@ describe('BookingForm', () => {
   });
 
   it('permite reservar correctamente (mock fetch)', async () => {
-    global.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) })) as any;
+    global.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) })) as unknown as jest.Mock;
     render(
       <BookingForm
-        services={[{ id: '1', name: 'Corte', price: 10, duration: 30 }]}
+        services={[{ id: '1', name: 'Corte', price: 10, duration: 30, description: 'Corte de pelo' }]}
         initialServiceId={'1'}
         onBookingSuccess={() => {}}
       />

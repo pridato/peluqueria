@@ -121,7 +121,6 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        {/* añadir tijeras. */}
         
 
         {/* Services Section - Carrusel Horizontal */}
