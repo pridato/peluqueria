@@ -18,3 +18,5 @@ export const availableTimes = [
     "17:00",
     "17:30",
 ]
+
+export const API_URL = "http://localhost:8000"

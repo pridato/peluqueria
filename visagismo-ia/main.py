@@ -1,9 +1,20 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from face_detection import detect_face_landmarks
 from visagismo import analyze_face_shape
 
 app = FastAPI()
+
+# Configuración de CORS
+app.add_middleware(
+    CORSMiddleware,
+    # O puedes usar ["http://localhost:3000"] si quieres restringir
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post("/analyze")
