@@ -9,7 +9,7 @@ import Image from "next/image" // Importar Image
  */
 export default function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
     return (
-        <Card className="flex flex-col h-full p-6 bg-white rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+        <Card className="flex flex-col h-full p-6 bg-[hsl(60_66%_98%)] rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-[hsl(0_0%_88%)]">
             <CardHeader className="pb-4">
                 <div className="flex items-center gap-3 mb-3">
                     {testimonial.avatar ? (
@@ -18,10 +18,10 @@ export default function TestimonialCard({ testimonial }: { testimonial: Testimon
                             alt={`Avatar de ${testimonial.name}`}
                             width={48}
                             height={48}
-                            className="rounded-full object-cover border-2 border-primary"
+                            className="rounded-full object-cover border-2 border-[hsl(166_37%_37%)]"
                         />
                     ) : (
-                        <div className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-primary bg-gray-100 text-primary">
+                        <div className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-[hsl(166_37%_37%)] bg-gray-100 text-primary">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -40,20 +40,20 @@ export default function TestimonialCard({ testimonial }: { testimonial: Testimon
                     )}
 
                     <div>
-                        <p className="font-semibold text-lg text-gray-800">{testimonial.name}</p>
+                        <p className="font-semibold text-lg text-[hsl(0_0%_17%)]">{testimonial.name}</p>
                         <CardTitle className="flex items-center gap-0.5 text-base">
                             {Array.from({ length: testimonial.rating }).map((_, i) => (
-                                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                <Star key={i} className="h-4 w-4 fill-[hsl(166_37%_37%)] text-[hsl(166_37%_37%)]" />
                             ))}
                             {Array.from({ length: 5 - testimonial.rating }).map((_, i) => (
-                                <Star key={i} className="h-4 w-4 text-gray-300" />
+                                <Star key={i} className="h-4 w-4 text-[hsl(0_0%_17%)]" />
                             ))}
                         </CardTitle>
                     </div>
                 </div>
             </CardHeader>
             <CardContent className="flex-1">
-                <p className="text-gray-700 italic leading-relaxed">{testimonial.text}</p>
+                <p className="text-[hsl(0_0%_17%)] italic leading-relaxed">{testimonial.text}</p>
             </CardContent>
         </Card>
     )
