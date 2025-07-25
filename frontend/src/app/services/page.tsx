@@ -10,10 +10,10 @@ import { motion } from "framer-motion"
  */
 export default function ServicesPage() {
     return (
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-16 md:py-24 bg-[hsl(60_66%_98%)]">
             <div className="px-4 md:px-6 text-center">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">Nuestros Servicios</h1>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12">
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[hsl(0_0%_17%)]">Nuestros Servicios</h1>
+                <p className="text-lg text-[hsl(0_0%_17%)] max-w-3xl mx-auto mb-12">
                     Descubre la gama completa de tratamientos y cortes que ofrecemos para realzar tu estilo.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
