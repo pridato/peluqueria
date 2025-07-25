@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { testimonials, services, teamMembers } from "@/lib/data"
+import Image from "next/image"
 
 export default function HomePage() {
   const testimonialsRef = useRef<HTMLDivElement>(null)
@@ -119,6 +120,9 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </section>
+
+        {/* añadir tijeras. */}
+        
 
         {/* Services Section - Carrusel Horizontal */}
         <section className="py-16 md:py-24 bg-white">

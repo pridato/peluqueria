@@ -302,7 +302,7 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
                     <SelectContent>
                         {services.map((service) => (
                             <SelectItem key={service.id} value={service.id}>
-                                {service.name} (${service.price.toFixed(2)})
+                                {service.name} ({service.price.toFixed(2)} €)
                             </SelectItem>
                         ))}
                     </SelectContent>
