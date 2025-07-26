@@ -328,7 +328,7 @@ export default function HomePage() {
                     </div>
 
                     <h3 className="text-xl font-semibold text-gray-800 mb-1">{member.name}</h3>
-                    <p className="text-[#fbbf24] font-medium">{member.role}</p>
+                    <p className="text-[#4ea69a] font-medium">{member.role}</p>
                   </motion.div>
               ))}
             </div>

@@ -48,6 +48,8 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
     }, [initialServiceId])
 
     const [datePopoverOpen, setDatePopoverOpen] = useState(false)
+    const [showCalendarPopup, setShowCalendarPopup] = useState(false)
+    const [lastBooking, setLastBooking] = useState<Booking | null>(null)
 
 
     /**
@@ -158,11 +160,30 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
         bookings.push(newBooking)
         onBookingSuccess(newBooking) // notificamos al componente padre del éxito de la reserva
         setBookingSuccess(true)
-
+        setLastBooking(newBooking)
+        setShowCalendarPopup(true)
         await sendEmail(newBooking);
 
 
         resetForm();
+    }
+
+    /**
+     * Construye el enlace para añadir la cita a Google Calendar.
+     * @param booking - Objeto de reserva
+     */
+    function buildGoogleCalendarUrl(booking: Booking) {
+        // Fecha y hora de inicio y fin en formato YYYYMMDDTHHmmssZ
+        const startDate = new Date(`${booking.date}T${booking.time}`)
+        const endDate = new Date(startDate.getTime() + 60 * 60 * 1000) // 1 hora después
+        function formatDate(d: Date) {
+            return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+        }
+        const details = `Reserva para ${booking.serviceName} con ${booking.customerName}`
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+            booking.serviceName
+        )}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(details)}&location=&sf=true&output=xml`
+        return url
     }
 
     /**
@@ -182,240 +203,268 @@ export default function BookingForm({ services, initialServiceId, onBookingSucce
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 p-8 border border-gray-200 rounded-xl shadow-lg bg-white">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Reservar Tu Cita</h2>
+        <>
+            <form onSubmit={handleSubmit} className="space-y-6 p-8 border border-gray-200 rounded-xl shadow-lg bg-white">
+                <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Reservar Tu Cita</h2>
 
-            {bookingSuccess && (
-                <div className="flex items-center gap-3 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200">
-                    <CheckCircle2 className="h-6 w-6" />
-                    <span className="font-medium">¡Tu cita ha sido reservada con éxito! Te esperamos.</span>
-                </div>
-            )}
-
-            {formError && (
-                <div className="flex items-center gap-3 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
-                    <XCircle className="h-6 w-6" />
-                    <span className="font-medium">{formError}</span>
-                </div>
-            )}
-
-            <div>
-                <Label htmlFor="name" className="mb-2 block text-gray-700 font-medium">
-                    Nombre Completo
-                </Label>
-                <Input
-                    id="name"
-                    type="text"
-                    placeholder="Tu nombre"
-                    value={customerName}
-                    onChange={(e) => {
-                        setCustomerName(e.target.value)
-                        setNameTouched(true)
-                    }}
-                    onBlur={() => setNameTouched(true)}
-                    className={cn(
-                        "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
-                        nameTouched && !customerName && "border-red-500 focus:border-red-500 focus:ring-red-500",
-                    )}
-                    required
-                />
-                {nameTouched && !customerName && <p className="text-red-500 text-sm mt-1">El nombre es obligatorio.</p>}
-            </div>
-
-            <div>
-                <Label htmlFor="email" className="mb-2 block text-gray-700 font-medium">
-                    Email
-                </Label>
-                <Input
-                    id="email"
-                    type="email"
-                    placeholder="tu@ejemplo.com"
-                    value={customerEmail}
-                    onChange={(e) => {
-                        setCustomerEmail(e.target.value)
-                        setEmailTouched(true)
-                    }}
-                    onBlur={() => setEmailTouched(true)}
-                    className={cn(
-                        "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
-                        emailTouched &&
-                        (!customerEmail || !isValidEmail(customerEmail)) &&
-                        "border-red-500 focus:border-red-500 focus:ring-red-500",
-                    )}
-                    required
-                />
-                {emailTouched && !customerEmail && <p className="text-red-500 text-sm mt-1">El email es obligatorio.</p>}
-                {emailTouched && customerEmail && !isValidEmail(customerEmail) && (
-                    <p className="text-red-500 text-sm mt-1">Formato de email inválido.</p>
+                {bookingSuccess && (
+                    <div className="flex items-center gap-3 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200">
+                        <CheckCircle2 className="h-6 w-6" />
+                        <span className="font-medium">¡Tu cita ha sido reservada con éxito! Te esperamos.</span>
+                    </div>
                 )}
-            </div>
 
-            <div>
-                <Label htmlFor="phone" className="mb-2 block text-gray-700 font-medium">
-                    Teléfono
-                </Label>
-                <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="123-456-7890"
-                    value={customerPhone}
-                    onChange={(e) => {
-                        setCustomerPhone(e.target.value)
-                        setPhoneTouched(true)
-                    }}
-                    onBlur={() => setPhoneTouched(true)}
-                    className={cn(
-                        "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
-                        phoneTouched &&
-                        (!customerPhone || !isValidPhone(customerPhone)) &&
-                        "border-red-500 focus:border-red-500 focus:ring-red-500",
-                    )}
-                    required
-                />
-                {phoneTouched && !customerPhone && <p className="text-red-500 text-sm mt-1">El teléfono es obligatorio.</p>}
-                {phoneTouched && customerPhone && !isValidPhone(customerPhone) && (
-                    <p className="text-red-500 text-sm mt-1">Formato de teléfono inválido (solo números, min 9).</p>
+                {formError && (
+                    <div className="flex items-center gap-3 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
+                        <XCircle className="h-6 w-6" />
+                        <span className="font-medium">{formError}</span>
+                    </div>
                 )}
-            </div>
 
-            <div>
-                <Label htmlFor="service" className="mb-2 block text-gray-700 font-medium">
-                    Servicio
-                </Label>
-                <Select
-                    value={selectedServiceId}
-                    onValueChange={(value) => {
-                        setSelectedServiceId(value)
-                        setServiceTouched(true)
-                    }}
-                    required
-                >
-                    <SelectTrigger
-                        id="service"
+                <div>
+                    <Label htmlFor="name" className="mb-2 block text-gray-700 font-medium">
+                        Nombre Completo
+                    </Label>
+                    <Input
+                        id="name"
+                        type="text"
+                        placeholder="Tu nombre"
+                        value={customerName}
+                        onChange={(e) => {
+                            setCustomerName(e.target.value)
+                            setNameTouched(true)
+                        }}
+                        onBlur={() => setNameTouched(true)}
                         className={cn(
                             "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
-                            serviceTouched && !selectedServiceId && "border-red-500 focus:border-red-500 focus:ring-red-500",
+                            nameTouched && !customerName && "border-red-500 focus:border-red-500 focus:ring-red-500",
                         )}
-                    >
-                        <SelectValue placeholder="Selecciona un servicio" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {services.map((service) => (
-                            <SelectItem key={service.id} value={service.id}>
-                                {service.name} ({service.price.toFixed(2)} €)
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                {serviceTouched && !selectedServiceId && (
-                    <p className="text-red-500 text-sm mt-1">El servicio es obligatorio.</p>
-                )}
-            </div>
+                        required
+                    />
+                    {nameTouched && !customerName && <p className="text-red-500 text-sm mt-1">El nombre es obligatorio.</p>}
+                </div>
 
-            <div>
-                <Label htmlFor="date" className="mb-2 block text-gray-700 font-medium">
-                    Fecha
-                </Label>
-                <Popover open={datePopoverOpen} onOpenChange={setDatePopoverOpen}>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant={"outline"}
+                <div>
+                    <Label htmlFor="email" className="mb-2 block text-gray-700 font-medium">
+                        Email
+                    </Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="tu@ejemplo.com"
+                        value={customerEmail}
+                        onChange={(e) => {
+                            setCustomerEmail(e.target.value)
+                            setEmailTouched(true)
+                        }}
+                        onBlur={() => setEmailTouched(true)}
+                        className={cn(
+                            "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
+                            emailTouched &&
+                            (!customerEmail || !isValidEmail(customerEmail)) &&
+                            "border-red-500 focus:border-red-500 focus:ring-red-500",
+                        )}
+                        required
+                    />
+                    {emailTouched && !customerEmail && <p className="text-red-500 text-sm mt-1">El email es obligatorio.</p>}
+                    {emailTouched && customerEmail && !isValidEmail(customerEmail) && (
+                        <p className="text-red-500 text-sm mt-1">Formato de email inválido.</p>
+                    )}
+                </div>
+
+                <div>
+                    <Label htmlFor="phone" className="mb-2 block text-gray-700 font-medium">
+                        Teléfono
+                    </Label>
+                    <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="123-456-7890"
+                        value={customerPhone}
+                        onChange={(e) => {
+                            setCustomerPhone(e.target.value)
+                            setPhoneTouched(true)
+                        }}
+                        onBlur={() => setPhoneTouched(true)}
+                        className={cn(
+                            "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
+                            phoneTouched &&
+                            (!customerPhone || !isValidPhone(customerPhone)) &&
+                            "border-red-500 focus:border-red-500 focus:ring-red-500",
+                        )}
+                        required
+                    />
+                    {phoneTouched && !customerPhone && <p className="text-red-500 text-sm mt-1">El teléfono es obligatorio.</p>}
+                    {phoneTouched && customerPhone && !isValidPhone(customerPhone) && (
+                        <p className="text-red-500 text-sm mt-1">Formato de teléfono inválido (solo números, min 9).</p>
+                    )}
+                </div>
+
+                <div>
+                    <Label htmlFor="service" className="mb-2 block text-gray-700 font-medium">
+                        Servicio
+                    </Label>
+                    <Select
+                        value={selectedServiceId}
+                        onValueChange={(value) => {
+                            setSelectedServiceId(value)
+                            setServiceTouched(true)
+                        }}
+                        required
+                    >
+                        <SelectTrigger
+                            id="service"
                             className={cn(
-                                `w-full justify-start text-left font-normal rounded-lg px-4 py-2.5 border-gray-300 focus:border-primary focus:ring-primary`,
-                                !selectedDate && "text-muted-foreground",
-                                dateTouched && !selectedDate && "border-red-500 focus:border-red-500 focus:ring-red-500",
+                                "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
+                                serviceTouched && !selectedServiceId && "border-red-500 focus:border-red-500 focus:ring-red-500",
                             )}
-                            onClick={() => setDateTouched(true)}
                         >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {selectedDate ? format(selectedDate, "PPP", { locale: es }) : <span>Selecciona una fecha</span>}
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                        <Calendar
-                            mode="single"
-                            selected={selectedDate}
-                            onSelect={(date) => {
-                                if (date) {
-                                    setSelectedDate(date)
-                                    setDateTouched(true)
-                                    setDatePopoverOpen(false)
-                                }
-                            }}
-                            disabled={(date) => {
-                                const today = new Date()
-                                today.setHours(0, 0, 0, 0) // eliminamos la hora
-                                return date < today || date.getDay() === 0
-                            }}
-
-                        />
-                    </PopoverContent>
-                </Popover>
-                {dateTouched && !selectedDate && <p className="text-red-500 text-sm mt-1">La fecha es obligatoria.</p>}
-            </div>
-
-            <div>
-                <Label htmlFor="time" className="mb-2 block text-gray-700 font-medium">
-                    Hora
-                </Label>
-                <Select
-                    value={selectedTime}
-                    onValueChange={(value) => {
-                        setSelectedTime(value)
-                        setTimeTouched(true)
-                    }}
-                    required
-                >
-                    <SelectTrigger
-                        id="time"
-                        className={cn(
-                            "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
-                            timeTouched && !selectedTime && "border-red-500 focus:border-red-500 focus:ring-red-500",
-                        )}
-                    >
-                        <SelectValue placeholder="Selecciona una hora" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {availableTimes.map((time) => {
-                            const disabled = isPastTime(time, selectedDate)
-
-                            return (
-                                <SelectItem
-                                    key={time}
-                                    value={time}
-                                    disabled={disabled}
-                                    className={cn(disabled && "text-gray-400 cursor-not-allowed")}
-                                >
-                                    {time}
+                            <SelectValue placeholder="Selecciona un servicio" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {services.map((service) => (
+                                <SelectItem key={service.id} value={service.id}>
+                                    {service.name} ({service.price.toFixed(2)} €)
                                 </SelectItem>
-                            )
-                        })}
-                    </SelectContent>
-                </Select>
-                {timeTouched && !selectedTime && <p className="text-red-500 text-sm mt-1">La hora es obligatoria.</p>}
-            </div>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {serviceTouched && !selectedServiceId && (
+                        <p className="text-red-500 text-sm mt-1">El servicio es obligatorio.</p>
+                    )}
+                </div>
 
-            <Button
-                type="submit"
-                className="w-full bg-[hsl(166_37%_37%)] hover:bg-[hsl(166_37%_37%)]/90 text-[hsl(60_66%_98%)] text-lg py-3 rounded-lg shadow-md"
-            >
-                Confirmar Reserva
-            </Button>
+                <div>
+                    <Label htmlFor="date" className="mb-2 block text-gray-700 font-medium">
+                        Fecha
+                    </Label>
+                    <Popover open={datePopoverOpen} onOpenChange={setDatePopoverOpen}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant={"outline"}
+                                className={cn(
+                                    `w-full justify-start text-left font-normal rounded-lg px-4 py-2.5 border-gray-300 focus:border-primary focus:ring-primary`,
+                                    !selectedDate && "text-muted-foreground",
+                                    dateTouched && !selectedDate && "border-red-500 focus:border-red-500 focus:ring-red-500",
+                                )}
+                                onClick={() => setDateTouched(true)}
+                            >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {selectedDate ? format(selectedDate, "PPP", { locale: es }) : <span>Selecciona una fecha</span>}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                            <Calendar
+                                mode="single"
+                                selected={selectedDate}
+                                onSelect={(date) => {
+                                    if (date) {
+                                        setSelectedDate(date)
+                                        setDateTouched(true)
+                                        setDatePopoverOpen(false)
+                                    }
+                                }}
+                                disabled={(date) => {
+                                    const today = new Date()
+                                    today.setHours(0, 0, 0, 0) // eliminamos la hora
+                                    return date < today || date.getDay() === 0
+                                }}
+                                locale={es}
+                            />
+                        </PopoverContent>
+                    </Popover>
+                    {dateTouched && !selectedDate && <p className="text-red-500 text-sm mt-1">La fecha es obligatoria.</p>}
+                </div>
 
-            <div className="relative flex py-5 items-center">
-                <div className="flex-grow border-t border-gray-300"></div>
-                <span className="flex-shrink mx-4 text-gray-500">O</span>
-                <div className="flex-grow border-t border-gray-300"></div>
-            </div>
+                <div>
+                    <Label htmlFor="time" className="mb-2 block text-gray-700 font-medium">
+                        Hora
+                    </Label>
+                    <Select
+                        value={selectedTime}
+                        onValueChange={(value) => {
+                            setSelectedTime(value)
+                            setTimeTouched(true)
+                        }}
+                        required
+                    >
+                        <SelectTrigger
+                            id="time"
+                            className={cn(
+                                "border-gray-300 focus:border-primary focus:ring-primary rounded-lg px-4 py-2.5",
+                                timeTouched && !selectedTime && "border-red-500 focus:border-red-500 focus:ring-red-500",
+                            )}
+                        >
+                            <SelectValue placeholder="Selecciona una hora" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {availableTimes.map((time) => {
+                                const disabled = isPastTime(time, selectedDate)
 
-            <Button
-                type="button"
-                onClick={handleWhatsappBooking}
-                className="w-full bg-green-500 hover:cursor-pointer hover:bg-green-600 text-white text-lg py-3 rounded-lg shadow-md flex items-center justify-center gap-2"
-            >
-                <Whatsapp className="h-6 w-6" />
-                Reservar por WhatsApp
-            </Button>
-        </form>
+                                return (
+                                    <SelectItem
+                                        key={time}
+                                        value={time}
+                                        disabled={disabled}
+                                        className={cn(disabled && "text-gray-400 cursor-not-allowed")}
+                                    >
+                                        {time}
+                                    </SelectItem>
+                                )
+                            })}
+                        </SelectContent>
+                    </Select>
+                    {timeTouched && !selectedTime && <p className="text-red-500 text-sm mt-1">La hora es obligatoria.</p>}
+                </div>
+
+                <Button
+                    type="submit"
+                    className="w-full bg-[hsl(166_37%_37%)] hover:bg-[hsl(166_37%_37%)]/90 text-[hsl(60_66%_98%)] text-lg py-3 rounded-lg shadow-md"
+                >
+                    Confirmar Reserva
+                </Button>
+
+                <div className="relative flex py-5 items-center">
+                    <div className="flex-grow border-t border-gray-300"></div>
+                    <span className="flex-shrink mx-4 text-gray-500">O</span>
+                    <div className="flex-grow border-t border-gray-300"></div>
+                </div>
+
+                <Button
+                    type="button"
+                    onClick={handleWhatsappBooking}
+                    className="w-full bg-green-500 hover:cursor-pointer hover:bg-green-600 text-white text-lg py-3 rounded-lg shadow-md flex items-center justify-center gap-2"
+                >
+                    <Whatsapp className="h-6 w-6" />
+                    Reservar por WhatsApp
+                </Button>
+            </form>
+            {showCalendarPopup && lastBooking && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                    <div className="bg-white p-8 rounded-xl shadow-xl max-w-sm w-full flex flex-col items-center gap-6">
+                        <h3 className="text-xl font-bold text-gray-800 text-center">¿Quieres guardar tu cita en Google Calendar?</h3>
+                        <div className="flex gap-4 w-full">
+                            <Button
+                                className="text-black bg-gray-300 hover:bg-gray-400"
+                                onClick={() => {
+                                    window.open(buildGoogleCalendarUrl(lastBooking), '_blank')
+                                    setShowCalendarPopup(false)
+                                }}
+                                type="button"
+                            >
+                                Guardar en Google Calendar
+                            </Button>
+                            <Button
+                                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800"
+                                onClick={() => setShowCalendarPopup(false)}
+                                type="button"
+                            >
+                                Cerrar
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     )
 }
