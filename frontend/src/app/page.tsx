@@ -91,7 +91,7 @@ export default function HomePage() {
   return (
       <>
         {/* Hero Section */}
-        <section className="top-6 relative w-full h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden flex items-center justify-center pt-16 bg-[url('/pattern.svg')] bg-white bg-repeat bg-[length:50px_20px]">
+        <section className="relative w-full h-[600px] md:h-[700px] lg:h-[900px] overflow-hidden flex items-center justify-center bg-[hsl(60_66%_98%)]">
         <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export default function HomePage() {
               <Button
                   asChild
                   size="lg"
-                  className="bg-[#fbbf24] hover:bg-[#f59e0b] text-white text-xl px-10 py-7 rounded-full shadow-xl transition-transform transform hover:scale-105 focus:ring-4 focus:ring-primary/50"
+                  className="bg-[#4ea69a] hover:bg-[#3b7c71] text-white text-xl px-10 py-7 rounded-full shadow-xl transition-transform transform hover:scale-105 focus:ring-4 focus:ring-primary/50"
               >
                 <Link href="/book" className="text-white">Reservar Cita Ahora</Link>
               </Button>

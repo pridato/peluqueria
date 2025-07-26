@@ -148,13 +148,6 @@ export default function Header() {
                 Servicios
               </Link>
               <Link
-                href="/book"
-                className="text-lg font-medium text-[hsl(0_0%_17%)] hover:text-[hsl(166_37%_37%)] transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Reservar
-              </Link>
-              <Link
                 href="/visagismo"
                 className="text-lg font-medium text-[hsl(0_0%_17%)] hover:text-[hsl(166_37%_37%)] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}

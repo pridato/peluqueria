@@ -26,7 +26,7 @@ export default function ServiceCard({ service }: { service: Service }) {
                 </div>
             </CardContent>
             <CardFooter>
-                <Button asChild className="w-full bg-[hsl(166_37%_37%)] hover:bg-[hsl(166_37%_37%)]/90 text-[hsl(60_66%_98%)] text-base py-6">
+                <Button asChild className="w-full bg-[#f7ecd7] hover:bg-[#e9dcc2] text-[#3b7c71] text-lg py-6">
                     <Link href={`/book?serviceId=${service.id}`}>Reservar Ahora</Link>
                 </Button>
             </CardFooter>
