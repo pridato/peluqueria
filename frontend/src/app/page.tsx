@@ -8,6 +8,14 @@ import { motion } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import { Camera, ChevronLeft, ChevronRight, Sparkles, Users } from "lucide-react"
 import { testimonials, services, teamMembers } from "@/lib/data"
+import { Playfair_Display } from "next/font/google"
+
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['700'], // puedes ajustar según lo que necesites
+  variable: '--font-playfair',
+})
 
 export default function HomePage() {
   const testimonialsRef = useRef<HTMLDivElement>(null)
@@ -97,8 +105,11 @@ export default function HomePage() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative z-20 flex flex-col items-center justify-center h-full text-center max-w-4xl"
           >
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-lg leading-tight">
-              Transforma tu Estilo en <span className="text-[hsl(166_37%_37%)]">La Barbería Elegante</span>
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-lg leading-tight text-center">
+              Transforma tu Estilo en <br />
+              <span className={`text-[#3b7c71] ${playfair.className}`}>
+                La Barbería Elegante
+              </span>
             </h1>
             <p className="text-xl md:text-2xl max-w-3xl mb-10 drop-shadow-md font-light">
               Donde la tradición se encuentra con la modernidad. Expertos en cortes, coloración y cuidado de barba para un
