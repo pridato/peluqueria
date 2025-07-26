@@ -110,7 +110,7 @@ export default function HomePage() {
                 La Barbería Elegante
               </span>
             </h1>
-            <p className="text-xl md:text-2xl max-w-3xl mb-10 drop-shadow-md font-light">
+            <p className="text-lg md:text-2xl max-w-3xl mb-10 drop-shadow-md font-light">
               Donde la tradición se encuentra con la modernidad. Expertos en cortes, coloración y cuidado de barba para un
               look impecable.
             </p>
