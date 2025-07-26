@@ -6,9 +6,8 @@ import TestimonialCard from "@/components/testimonial-card"
 import ServiceCard from "@/components/service-card"
 import { motion } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { Camera, ChevronLeft, ChevronRight, Sparkles, Users } from "lucide-react"
 import { testimonials, services, teamMembers } from "@/lib/data"
-import Image from "next/image"
 
 export default function HomePage() {
   const testimonialsRef = useRef<HTMLDivElement>(null)
@@ -121,8 +120,6 @@ export default function HomePage() {
           </motion.div>
         </section>
 
-        
-
         {/* Services Section - Carrusel Horizontal */}
         <section className="py-16 md:py-24 bg-white">
           <div className="md:px-6 items-center text-center">
@@ -151,6 +148,113 @@ export default function HomePage() {
             >
               <Link href="/services">Ver Todos los Servicios</Link>
             </Button>
+          </div>
+        </section>
+
+        {/* Visagismo Section */}
+        <section className="py-16 md:py-24 bg-[hsl(60_66%_98%)]">
+          <div className="px-4 md:px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              {/* Content Side */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8 }}
+                className="space-y-6"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <Sparkles className="h-8 w-8 text-[hsl(166_37%_37%)]" />
+                  <h2 className="text-4xl md:text-5xl font-bold text-[hsl(0_0%_17%)]">Visagismo Digital</h2>
+                </div>
+                <p className="text-xl text-[hsl(0_0%_17%)] leading-relaxed">
+                  Descubre el corte perfecto para tu rostro con nuestra tecnología de análisis facial avanzada.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <Camera className="h-6 w-6 text-[hsl(166_37%_37%)] mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-[hsl(0_0%_17%)] text-lg">Análisis Facial Inteligente</h3>
+                      <p className="text-[hsl(0_0%_17%)]">
+                        Sube tu foto y nuestro sistema analizará la forma de tu rostro para recomendarte el corte ideal.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <Users className="h-6 w-6 text-[hsl(166_37%_37%)] mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-[hsl(0_0%_17%)] text-lg">Recomendaciones Personalizadas</h3>
+                      <p className="text-[hsl(0_0%_17%)]">
+                        Recibe sugerencias específicas basadas en tu tipo de rostro y preferencias de estilo.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <Button
+                    asChild
+                    className="bg-[hsl(166_37%_37%)] hover:bg-[hsl(166_37%_37%)]/90 text-[hsl(60_66%_98%)] text-lg px-8 py-6 rounded-full shadow-lg"
+                  >
+                    <Link href="/visagismo">Probar Visagismo</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-[hsl(166_37%_37%)] text-[hsl(166_37%_37%)] hover:bg-[hsl(166_37%_37%)] hover:text-[hsl(60_66%_98%)] text-lg px-8 py-6 rounded-full bg-transparent"
+                  >
+                    <Link href="/book">Reservar Consulta</Link>
+                  </Button>
+                </div>
+              </motion.div>
+
+              {/* Visual Side */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative"
+              >
+                <div className="relative bg-gradient-to-br from-[hsl(166_37%_37%)] to-[hsl(166_37%_30%)] rounded-2xl p-8 shadow-2xl">
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-[hsl(60_66%_98%)] rounded-lg p-4 text-center shadow-md">
+                      <div className="w-16 h-16 bg-[hsl(166_37%_37%)] rounded-full mx-auto mb-2 flex items-center justify-center">
+                        <span className="text-[hsl(60_66%_98%)] font-bold text-lg">1</span>
+                      </div>
+                      <p className="text-[hsl(0_0%_17%)] font-medium text-sm">Sube tu Foto</p>
+                    </div>
+                    <div className="bg-[hsl(60_66%_98%)] rounded-lg p-4 text-center shadow-md">
+                      <div className="w-16 h-16 bg-[hsl(166_37%_37%)] rounded-full mx-auto mb-2 flex items-center justify-center">
+                        <span className="text-[hsl(60_66%_98%)] font-bold text-lg">2</span>
+                      </div>
+                      <p className="text-[hsl(0_0%_17%)] font-medium text-sm">Análisis IA</p>
+                    </div>
+                    <div className="bg-[hsl(60_66%_98%)] rounded-lg p-4 text-center shadow-md">
+                      <div className="w-16 h-16 bg-[hsl(166_37%_37%)] rounded-full mx-auto mb-2 flex items-center justify-center">
+                        <span className="text-[hsl(60_66%_98%)] font-bold text-lg">3</span>
+                      </div>
+                      <p className="text-[hsl(0_0%_17%)] font-medium text-sm">Recomendación</p>
+                    </div>
+                    <div className="bg-[hsl(60_66%_98%)] rounded-lg p-4 text-center shadow-md">
+                      <div className="w-16 h-16 bg-[hsl(166_37%_37%)] rounded-full mx-auto mb-2 flex items-center justify-center">
+                        <span className="text-[hsl(60_66%_98%)] font-bold text-lg">4</span>
+                      </div>
+                      <p className="text-[hsl(0_0%_17%)] font-medium text-sm">¡Nuevo Look!</p>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="inline-block bg-[hsl(60_66%_98%)] rounded-full p-6 shadow-lg">
+                      <Camera className="h-12 w-12 text-[hsl(166_37%_37%)]" />
+                    </div>
+                    <p className="text-[hsl(60_66%_98%)] font-semibold mt-4 text-lg">Tecnología de Análisis Facial</p>
+                  </div>
+                </div>
+                {/* Decorative elements */}
+                <div className="absolute -top-4 -right-4 w-8 h-8 bg-[hsl(166_37%_37%)] rounded-full opacity-60"></div>
+                <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-[hsl(166_37%_37%)] rounded-full opacity-40"></div>
+                <div className="absolute top-1/2 -left-6 w-4 h-4 bg-[hsl(166_37%_37%)] rounded-full opacity-30"></div>
+              </motion.div>
+            </div>
           </div>
         </section>
 
