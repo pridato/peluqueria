@@ -8,13 +8,12 @@ import { motion } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import { Camera, ChevronLeft, ChevronRight, Sparkles, Users } from "lucide-react"
 import { testimonials, services, teamMembers } from "@/lib/data"
-import { Playfair_Display } from "next/font/google"
+import { Lora } from 'next/font/google'
 
-
-const playfair = Playfair_Display({
+const lora = Lora({
   subsets: ['latin'],
-  weight: ['700'], // puedes ajustar según lo que necesites
-  variable: '--font-playfair',
+  weight: ['700'],
+  variable: '--font-lora',
 })
 
 export default function HomePage() {
@@ -107,7 +106,7 @@ export default function HomePage() {
           >
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 drop-shadow-lg leading-tight text-center">
               Transforma tu Estilo en <br />
-              <span className={`text-[#3b7c71] ${playfair.className}`}>
+              <span className={`text-[#3b7c71] ${lora.className}`}>
                 La Barbería Elegante
               </span>
             </h1>
@@ -130,6 +129,7 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </section>
+
 
         {/* Services Section - Carrusel Horizontal */}
         <section className="py-16 md:py-24 bg-white">
